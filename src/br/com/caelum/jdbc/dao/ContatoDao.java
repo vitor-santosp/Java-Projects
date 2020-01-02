@@ -87,4 +87,33 @@ public class ContatoDao {
 		}
 	}
 	
+	public void alteraContato(Contato contato) {
+		String sql = "update contatos set nome=?, email=?, endereco=?,"
+				+ "dataNascimento=? where id=?";
+		try {
+			PreparedStatement stmt = this.connection.prepareStatement(sql);
+			stmt.setString(1, contato.getNome());
+			stmt.setString(2, contato.getEmail());
+			stmt.setString(3, contato.getEndereco());
+			stmt.setDate(4, new Date(contato.getDatanascimento().getTimeInMillis()));
+			stmt.setLong(5, contato.getId());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new DAOException();
+		}
+	}
+	
+	public void excluirContato(Integer id) {
+		String sql = "delete from contatos where id=?";
+		try {
+			PreparedStatement stmt = this.connection.prepareStatement(sql);
+			stmt.setLong(1, id);
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new DAOException();
+		}
+	}
+	
 }
